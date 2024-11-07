@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Myshop.Web.Models.OrderHeader>
+
+@{
+    ViewData["Title"] = "All Orders";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<h1 class="text-center" style="color:green">All Users' Orders</h1>
+
+<table id="myTable" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>@Html.DisplayNameFor(model => model.First().AppUser.City)</th>
+            <th>@Html.DisplayNameFor(model => model.First().AppUser.Address)</th>
+            <th>@Html.DisplayNameFor(model => model.First().AppUser.Phone)</th>
+            <th>@Html.DisplayNameFor(model => model.First().OrderDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().OrderStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().PaymentStatus)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.AppUser.DisplayName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AppUser.City)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AppUser.Address)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AppUser.Phone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
+                    <td>
+                        <a class="btn btn-warning" asp-action="OrderDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No orders found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+        });
+    });
+</script>

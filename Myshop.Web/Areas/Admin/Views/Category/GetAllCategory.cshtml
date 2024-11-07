@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Myshop.Web.ViewModels.CategoryViewModel>
+
+
+@{
+    ViewBag.CartManagement = "Category Management";
+    ViewBag.PageTitle = "View All Categories";
+    // Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Check for each type of TempData message and show the corresponding Toastr notification
+            var toastrMessage = '@TempData["toastrMessage"]';
+            var toastrType = '@TempData["toastrType"]';
+
+            if (toastrMessage) {
+                switch (toastrType) {
+                    case 'created':
+                        toastr.info(toastrMessage, '', { "toastClass": "toast bg-info text-white" });
+                        break;
+                    case 'updated':
+                        toastr.warning(toastrMessage, '', { "toastClass": "toast bg-warning text-dark" });
+                        break;
+                    case 'deleted':
+                        toastr.error(toastrMessage, '', { "toastClass": "toast bg-danger text-white" });
+                        break;
+                    default:
+                        toastr.info(toastrMessage);
+                        break;
+                }
+            }
+        });
+    </script>
+}
+
+<p>
+    <a class="btn btn-info" asp-action="CreateCategory">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="text-align: center;">@Html.DisplayNameFor(model => model.First().Name)</th>
+            <th style="text-align: center;">@Html.DisplayNameFor(model => model.First().Description)</th>
+            <th style="text-align: center;">@Html.DisplayNameFor(model => model.First().CreatedDate)</th>
+            <th style="text-align: center;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                <td>
+                    <a class="btn btn-warning" asp-action="UpdateCategory" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-success" asp-action="GetById" asp-route-id="@item.Id">Details</a>
+                    <form asp-action="DeleteCategory" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this category?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

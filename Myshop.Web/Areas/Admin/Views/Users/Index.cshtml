@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Myshop.Web.ViewModels.UserViewModel>
+
+@{
+    ViewBag.CartManagement = "Users Management";
+    ViewBag.PageTitle = "View All Users";
+}
+
+@section scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#usersTable').DataTable();
+
+            $('.delete-btn').on('click', function () {
+                var userId = $(this).data('id');
+                var formId = '#deleteForm-' + userId;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(formId).submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<p>
+    <a class="btn btn-info" href="/Identity/account/Register">Create New User</a>
+</p>
+
+<table id="usersTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Email)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>
+                    <form id="deleteForm-@item.Id" asp-action="DeleteUser" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                        {
+                            <a class="btn btn-success" asp-action="LockUnlock" asp-route-id="@item.Id"><i class="fas fa-lock-open"></i></a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success" asp-asp-controller="Users" asp-action="LockUnlock" asp-route-id="@item.Id"><i class="fas fa-lock"></i></a>
+                        }
+                        |
+                        <a class="btn btn-danger delete-btn" data-id="@item.Id">Delete</a>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

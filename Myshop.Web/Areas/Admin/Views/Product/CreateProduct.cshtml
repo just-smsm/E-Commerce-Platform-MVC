@@ -1,0 +1,70 @@
+﻿@model Myshop.Web.ViewModels.ProductViewModel
+
+@{
+    ViewData["CartManagement"] = "Product Management";
+    ViewData["PageTitle"] = "Create New Product";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PictureUrl" class="control-label">Picture</label>
+                <input type="file" name="file" class="form-control" onchange="fillimg(event);" />
+                <span asp-validation-for="PictureUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                    <option value="">Select a Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+        <img id="ImagePreview" src="~/@Model.PictureUrl" class="img-fluid" style="max-width: 300px; height: auto;" />
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetAllProducts" class="btn btn-secondary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var fillimg = function (event) {
+            var imgholder = document.getElementById("ImagePreview");
+            imgholder.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+}

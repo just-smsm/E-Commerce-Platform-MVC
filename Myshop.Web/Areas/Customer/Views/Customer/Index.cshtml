@@ -1,0 +1,103 @@
+﻿@model IPagedList<Myshop.Web.ViewModels.ProductViewModel>
+
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    @foreach (var product in Model)
+    {
+        <div class="col mb-5">
+            <a asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id" class="text-decoration-none" style="color: black;">
+                <div class="card h-85">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <!-- Product image-->
+                    <img class="card-img-top" style="height:200px" src="@Url.Content($"~/{product.PictureUrl}")" alt="@product.Name" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">@product.Name</h5>
+                            <!-- Product reviews-->
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <i class="bi-star-fill"></i>
+                                <i class="bi-star-fill"></i>
+                                <i class="bi-star-fill"></i>
+                                <i class="bi-star-fill"></i>
+                                <i class="bi-star-fill"></i>
+                            </div>
+                            <!-- Product price-->
+                            <span class="text-muted text-decoration-line-through">$45.00</span>
+                            <span>$40.00</span>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <button asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id" class="btn btn-outline-dark mt-auto">View Product</button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+            new PagedListRenderOptions
+    {
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToPreviousPageFormat = "<button class='btn btn-outline-primary mx-1'>Previous</button>",
+        LinkToNextPageFormat = "<button class='btn btn-outline-primary mx-1'>Next</button>",
+        LinkToFirstPageFormat = "<button class='btn btn-outline-primary mx-1'>First</button>",
+        LinkToLastPageFormat = "<button class='btn btn-outline-primary mx-1'>Last</button>",
+        ContainerDivClasses = new[] { "pagination" },
+        UlElementClasses = new[] { "pagination" },
+        LiElementClasses = new[] { "page-item" }
+    })
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<style>
+    .btn-outline-primary {
+        border-color: #007bff;
+        border-radius: 0.25rem; /* Rounded corners */
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff; /* Change background on hover */
+            color: white; /* Change text color on hover */
+        }
+
+    .pagination {
+        margin-top: 1rem;
+    }
+
+    .page-item {
+        margin: 0 5px; /* Add spacing between buttons */
+    }
+
+    a {
+        color: black; /* Default text color for the link */
+    }
+
+        a:hover {
+            text-decoration: none; /* No underline on hover */
+        }
+
+    .card a {
+        display: block; /* Ensures the anchor tag is block-level */
+        text-decoration: none; /* Prevent default link underline */
+    }
+
+    /* If you want to ensure the button does not inherit the link color */
+    .card-footer a.btn {
+        color: black; /* Override button color if needed */
+    }
+
+</style>

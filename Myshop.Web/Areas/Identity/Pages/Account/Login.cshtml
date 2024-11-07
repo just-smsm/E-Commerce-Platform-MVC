@@ -1,0 +1,85 @@
+﻿@page
+@model Myshop.Web.Areas.Identity.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login Now :";
+}
+
+<h1 class="text-center mb-5 text-info">@ViewData["Title"]</h1>
+
+<div class="row d-flex justify-content-around">
+    <!-- Login Form -->
+    <div class="col-md-4">
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <!-- Email Input -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" required placeholder="name@example.com" />
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" required placeholder="password" />
+                <label asp-for="Input.Password" class="form-label">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                <label class="form-check-label" asp-for="Input.RememberMe">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+            </div>
+
+            <!-- Forgot Password Link -->
+            <div class="mt-3">
+                <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Image Section -->
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <section class="image-container">
+            <img src="~/img/login2.jpg" alt="login" class="full-width-image" />
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("account").addEventListener("submit", function () {
+            setTimeout(function () {
+                fetch('/Customer/Cart/GetCartCount')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('.badge').innerText = data.count;
+                    });
+            }, 1000); // Delay to allow login process to complete
+        });
+    </script>
+}
+
+<style>
+    .full-width-image {
+        width: 100%;
+        height: 400px; /* Maintain the height */
+        object-fit: cover; /* Crop the image if necessary while preserving aspect ratio */
+        margin: 0;
+        padding: 0;
+    }
+
+    .image-container {
+        margin: 0; /* No margin on the image container */
+        padding: 0; /* No padding on the image container */
+    }
+</style>
