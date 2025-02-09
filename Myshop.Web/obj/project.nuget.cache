@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mz7+lbyxk/M=",
+  "dgSpecHash": "PGIawWjCHLo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\alQsa\\source\\repos\\MYShopp\\Myshop.Web\\Myshop.Web.csproj",
+  "projectFilePath": "D:\\SQL2022\\MYShopp\\Myshop.Web\\Myshop.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alQsa\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\alQsa\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
