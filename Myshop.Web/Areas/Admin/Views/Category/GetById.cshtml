@@ -3,31 +3,34 @@
 @{
     ViewBag.CartManagement = "Category Management";
     ViewBag.PageTitle = "View Category";
-    // Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Name)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Name)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Description)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Description)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.CreatedDate)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.CreatedDate)
-    </dd>
-</dl>
-</div>
-<div>
-    <a asp-action="UpdateCategory" class="btn btn-warning" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="GetAllCategory" class="btn btn-secondary">Back to List</a>
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 border-0 rounded-3">
+        <div class="card-body">
+            <h2 class="text-primary fw-bold">Category Details</h2>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-4 fw-semibold text-secondary">Category Name:</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4 fw-semibold text-secondary">Description:</dt>
+                <dd class="col-sm-8 text-muted">@Model.Description</dd>
+
+                <dt class="col-sm-4 fw-semibold text-secondary">Created Date:</dt>
+                <dd class="col-sm-8">@Model.CreatedDate.ToString("MMMM dd, yyyy")</dd>
+            </dl>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 mt-4">
+                <a asp-action="UpdateCategory" asp-route-id="@Model?.Id" class="btn btn-warning px-4">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a asp-action="GetAllCategory" class="btn btn-secondary px-4 mx-2">
+                    <i class="fas fa-list"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,63 +1,138 @@
-﻿@model IEnumerable<Myshop.Web.Models.OrderHeader>
+﻿@using Myshop.Web.ViewModels
+@model IEnumerable<SpecificUSerOrdersVM>
 
 @{
-    ViewData["Title"] = "All Orders";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/_Customer.cshtml";
 }
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<div class="container mt-4">
+    <h2 class="text-center text-primary fw-bold mb-5">
+        <i class="bi bi-cart-check"></i> My Orders
+    </h2>
 
-<h1 class="text-center" style="color:green">All Users' Orders</h1>
-
-<table id="myTable" class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>@Html.DisplayNameFor(model => model.First().AppUser.City)</th>
-            <th>@Html.DisplayNameFor(model => model.First().AppUser.Address)</th>
-            <th>@Html.DisplayNameFor(model => model.First().AppUser.Phone)</th>
-            <th>@Html.DisplayNameFor(model => model.First().OrderDate)</th>
-            <th>@Html.DisplayNameFor(model => model.First().OrderStatus)</th>
-            <th>@Html.DisplayNameFor(model => model.First().PaymentStatus)</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Any())
-        {
-            foreach (var item in Model)
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center mt-4">
+            <i class="bi bi-exclamation-circle"></i> No orders found.
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var order in Model)
             {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.AppUser.DisplayName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.AppUser.City)</td>
-                    <td>@Html.DisplayFor(modelItem => item.AppUser.Address)</td>
-                    <td>@Html.DisplayFor(modelItem => item.AppUser.Phone)</td>
-                    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
-                    <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
-                    <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
-                    <td>
-                        <a class="btn btn-warning" asp-action="OrderDetails" asp-route-id="@item.Id">Details</a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="8" class="text-center">No orders found.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card shadow-sm border-0 order-card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-receipt"></i> Order Date: @order.OrderDate.ToString("yyyy-MM-dd")
+                            </h5>
+                        </div>
 
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-        });
-    });
-</script>
+                        <div class="card-body">
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-geo-alt"></i> <strong>City:</strong> @order.Address
+                            </p>
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-house-door"></i> <strong>Address:</strong> @order.Address
+                            </p>
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-telephone"></i> <strong>Phone:</strong> @order.Phone
+                            </p>
+
+                            <p class="mb-1">
+                                <i class="bi bi-hourglass-split"></i> <strong>Status:</strong>
+                                <span class="badge @GetOrderStatusBadge(order.OrderStatus)">
+                                    @order.OrderStatus
+                                </span>
+                            </p>
+
+                           
+
+                            <hr>
+
+                            <h6 class="fw-bold">📦 Order Items:</h6>
+                            <ul class="list-group list-group-flush">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-box"></i> @item.ProductName</span>
+                                        <span class="fw-bold text-success">$@item.ProductPrice</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .order-card {
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .badge {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+
+    /* Order Status Colors */
+    .badge-processing {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-shipped {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-Approved {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-cancelled {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    
+
+    .btn-outline-primary {
+        border-radius: 8px;
+        transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.02);
+        }
+</style>
+
+@functions {
+    string GetOrderStatusBadge(string status)
+    {
+        return status switch
+        {
+            "Processing" => "badge-processing",
+            "Shipped" => "badge-shipped",
+            "Approved" => "badge-Approved",
+            "Cancelled" => "badge-cancelled",
+            _ => "badge-secondary"
+        };
+    }
+
+}

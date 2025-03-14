@@ -31,9 +31,9 @@ namespace Myshop.Web.Areas.Customer.Controllers
             var pageNumber = page ?? 1; // Default to the first page
             const int pageSize = 8; // Number of products per page
 
-            var products = await _unitOfWork.Product.GetAllAsync();
+            var products = await _unitOfWork.Product.GetProductsWithCategoryAsync();
             var productViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(products);
-            var pagedProducts = productViewModels.ToPagedList(pageNumber, pageSize);
+            var pagedProducts = products.ToPagedList(pageNumber, pageSize);
 
             return View(pagedProducts);
         }
@@ -41,10 +41,10 @@ namespace Myshop.Web.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int productId)
         {
-            var product = await _unitOfWork.Product.GetByIdAsync(productId);
+            var product = await _unitOfWork.Product.GetProductByIdWithCategoryAsync(productId);
             if (product == null)
             {
-                return NotFound(); // Product not found
+                return RedirectToAction("index"); // Product not found
             }
 
             var shoppingCart = new ShoppingCart
@@ -133,9 +133,34 @@ namespace Myshop.Web.Areas.Customer.Controllers
             }
 
             string userId = claim.Value;
-            var orders = await _unitOfWork.OrderHeader.GetAllAsync(u => u.AppUserId == userId, includeProperties: "AppUser");
-            return View(orders);
+            var orders = await _unitOfWork.OrderHeader.GetAllAsync(
+                u => u.AppUserId == userId,
+                includeProperties: "AppUser,OrderDetails.Product" // ✅ Correct Nested Include
+            );
+
+            var SpecificUSerOrdersVM = new List<SpecificUSerOrdersVM>();
+
+            foreach (var order in orders)
+            {
+                SpecificUSerOrdersVM.Add(new SpecificUSerOrdersVM()
+                {
+                    OrderDate = order.OrderDate,
+                    Address = order.AppUser.Address,
+                    OrderStatus = order.OrderStatus,
+                    PaymentStatus = order.PaymentStatus,
+                    Phone = order.AppUser.Phone,
+                    OrderItems = order.OrderDetails.Select(s => new SpecificUSerOrdersProductsVM
+                    {
+                        ProductName = s.Product.Name,
+                        ProductPrice = s.Product.Price
+                    }).ToList() // ✅ Closing the List conversion properly
+                });
+            }
+
+            return View(SpecificUSerOrdersVM);
         }
+
+
         public async Task<IActionResult> DeleteProduct(int cartId)
         {
             var cart = await _unitOfWork.ShoppingCart.GetByIdAsync(cartId);

@@ -6,30 +6,35 @@
 <html lang="en">
 <head>
     @RenderSection("Styles", required: false)
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="~/Customer/css/styles.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Your One-Stop Shop for the Best Products">
+    <meta name="author" content="MyShop">
+    <title>@ViewData["Title"] - MyShop</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/assets/favicon.ico">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link href="~/Customer/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container px-4 px-lg-5">
-            
-            <a class="navbar-brand"  href="#!">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="/Customer/Customer/Index">MyShop</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"></li>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
                         if (User.IsInRole("Admin"))
@@ -41,20 +46,24 @@
                         else
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
-                                <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-                                    <li><a class="dropdown-item" href="/Customer/Customer/SpecificUSerOrders">All Orders</a></li>
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/Customer/Customer/SpecificUSerOrders">Orders</a></li>
                                     <li><a class="dropdown-item" href="/Identity/Account/Manage">Profile</a></li>
                                 </ul>
                             </li>
                         }
                     }
                 </ul>
+
+                <!-- User Authentication Partial -->
                 <partial name="_LoginPartial" />
+
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <form class="d-flex">
-                        <a href="/Customer/Cart/Index" class="btn btn-outline-dark">
+                      <form class="d-flex">
+                            <a href="/Customer/Cart/Index" class="btn btn-outline-light">
                             <i class="bi-cart-fill me-1"></i> Cart
                             @await Component.InvokeAsync("ShoppingCart")
                         </a>
@@ -63,31 +72,57 @@
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
-            </div>
-        </div>
-    </header>
-    <!-- Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-2">
+
+    <!-- Header Section -->
+    
+
+    <!-- Main Content -->
+    <main class="">
+
+        <div class="container">
+            
             @RenderBody()
         </div>
-    </section>
-    <!-- Footer-->
-    <footer class="py-5 bg-dark">
+    </main>
+
+    <!-- Footer -->
+    @* <footer class="bg-dark text-white text-center py-4">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+            
         </div>
-    </footer>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
+    </footer> *@
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Customer/js/scripts.js"></script>
-    @RenderSection("scripts", required: false)
+
+    @RenderSection("Scripts", required: false)
+
+ 
+    <style>
+        .navbar {
+            background-color: #0d6efd !important; /* Bootstrap Primary */
+        }
+
+            .navbar .nav-link {
+                color: white !important; /* White text for better contrast */
+            }
+
+                .navbar .nav-link:hover {
+                    color: #f8f9fa !important; /* Light hover effect */
+                }
+
+        .btn-outline-light {
+            border-color: white !important;
+            color: white !important;
+        }
+
+            .btn-outline-light:hover {
+                background-color: white !important;
+                color: #0d6efd !important;
+            }
+    </style>
 </body>
+
+
 </html>

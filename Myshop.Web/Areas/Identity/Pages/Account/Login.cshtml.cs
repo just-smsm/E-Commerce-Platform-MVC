@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Myshop.Web.Models;
+using Myshop.Web.Service;
+using Myshop.Web.UnitOfWorks;
 
 namespace Myshop.Web.Areas.Identity.Pages.Account
 {
@@ -20,9 +22,20 @@ namespace Myshop.Web.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public LoginModel(SignInManager<AppUser> signInManager,
+                          UserManager<AppUser> userManager,
+                          IHttpContextAccessor httpContextAccessor,
+                          IUnitOfWork unitOfWork,
+                          ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -71,20 +84,35 @@ namespace Myshop.Web.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // 🔹 Get the logged-in user
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        var userId = user.Id;
+
+                        // 🔹 Fetch the cart count for the logged-in user
+                        var cartItems = await _unitOfWork.ShoppingCart.GetAllAsync(c => c.AppUserId == userId);
+
+                        // 🔹 Store the cart count in session
+                        _httpContextAccessor.HttpContext.Session.SetInt32(SD.SessionKey, cartItems.Count());
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -97,8 +125,7 @@ namespace Myshop.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }
-}
+    }

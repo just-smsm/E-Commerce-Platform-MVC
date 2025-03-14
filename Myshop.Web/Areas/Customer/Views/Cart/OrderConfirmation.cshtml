@@ -1,36 +1,70 @@
 ﻿@model Myshop.Web.Models.OrderHeader
 
-<div class="container text-center">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h3 class="text-info">Thank You!</h3>
-        </div>
-    </div>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="order-confirmation-card text-center">
+  
+        <h2 class="text-success fw-bold mt-1">Thank You for Your Order!</h2>
+        <p class="lead text-muted">Your order has been successfully placed.</p>
 
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-6">
-            <img src="~/img/Confirm3.jpg" class="img-fluid" alt="Order Confirmation" />
-        </div>
-    </div>
+        <!-- Order Image -->
+        <img src="~/img/Confirm3.jpg" class="order-image img-fluid mb-3" alt="Order Confirmation" />
 
-    <div class="row">
-        <div class="col-12">
-            <h2>Your order number <strong>@Model.Id</strong> has been successfully placed!</h2>
-            <p class="h5">Order Total: <strong style="color:red">@Model.TotalPrice.ToString("C")</strong></p>
-            <!-- Add more details as needed -->
+        <!-- Order Details -->
+        <p class="h5 mb-3">Order Total: <strong class="text-danger">@Model.TotalPrice.ToString("C")</strong></p>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-center">
+            <a asp-controller="customer" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-shopping-cart"></i> Continue Shopping
+            </a>
         </div>
     </div>
 </div>
 
 @section Styles {
     <style>
-        .text-info {
-            font-weight: bold; /* Makes the title stand out */
+        body {
+            background-color: #f8f9fa;
         }
 
-        img {
-            max-width: 100%; /* Ensures responsive image */
-            height: auto; /* Maintains aspect ratio */
+        .order-confirmation-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            background: #28a745;
+            color: white;
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: popIn 0.5s ease-in-out;
+        }
+
+  
+
+        .order-image {
+            max-width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .btn i {
+            margin-right: 5px;
         }
     </style>
 }

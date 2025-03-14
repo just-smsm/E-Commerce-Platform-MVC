@@ -158,7 +158,7 @@ namespace Myshop.Web.Areas.Identity.Pages.Account
                     else
                     {
                         await _userManager.AddToRoleAsync(user, role);
-                        return RedirectToAction("index", "users", new { area = "Admin" }); 
+                        return RedirectToAction("index", "users", new { area = "Admin" });
                         var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

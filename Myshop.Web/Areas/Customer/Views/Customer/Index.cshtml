@@ -1,103 +1,249 @@
-﻿@model IPagedList<Myshop.Web.ViewModels.ProductViewModel>
+﻿@model IPagedList<Product>
 
 @using X.PagedList
 @using X.PagedList.Mvc.Core
-
-<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-    @foreach (var product in Model)
-    {
-        <div class="col mb-5">
-            <a asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id" class="text-decoration-none" style="color: black;">
-                <div class="card h-85">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" style="height:200px" src="@Url.Content($"~/{product.PictureUrl}")" alt="@product.Name" />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">@product.Name</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <i class="bi-star-fill"></i>
-                                <i class="bi-star-fill"></i>
-                                <i class="bi-star-fill"></i>
-                                <i class="bi-star-fill"></i>
-                                <i class="bi-star-fill"></i>
-                            </div>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$45.00</span>
-                            <span>$40.00</span>
+<header class=" text-center pt-3">
+    <div class="container">
+        <h1 style="color:#0d6efd" class="fw-bold">Welcome to Our Shop</h1>
+        <p style="color:navy" class="lead">Discover the best products at unbeatable prices.</p>
+    </div>
+</header>
+<div class="container py-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card product-card border-0 shadow-sm">
+                    <a asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id" class="text-decoration-none">
+                        <!-- Product Image -->
+                        <div class="product-image-container">
+                            <img class="product-image" src="@Url.Content($"~/{product.PictureUrl}")" alt="@product.Name">
                         </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
-                            <button asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id" class="btn btn-outline-dark mt-auto">View Product</button>
+                        <!-- Product Details -->
+                        <div class="card-body text-center">
+                            <h5 class="fw-bold product-name">@product.Name</h5>
+
+                            <!-- Product Category -->
+                            <p class="text-muted mb-1">@product.Category.Name</p>
+
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+
+                            <!-- Product Price -->
+                            <p class="mb-1">
+                                <span class="fw-bold text-primary ms-1">$@product.Price</span>
+                            </p>
+                        </div>
+
+                    </a>
+                    <!-- Product Actions -->
+                    <div class="card-footer bg-transparent border-0 text-center product-actions">
+                        <div class="d-grid gap-2">
+                            <!-- View Product Button -->
+                            <a asp-area="Customer" asp-controller="Customer" asp-action="Details" asp-route-productId="@product.Id"
+                               class="btn btn-outline-primary action-btn">View Product</a>
+
+                            <!-- Add To Cart Button -->
+                            <form method="post" asp-area="Customer" asp-controller="Customer" asp-action="Details">
+                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                <input type="hidden" name="Count" value="1" />
+                                <button type="submit" class="btn btn-outline-success action-btn">Add To Cart</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </a>
-        </div>
-    }
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+   {
+       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+       DisplayLinkToNextPage = PagedListDisplayMode.Always,
+       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+       DisplayLinkToLastPage = PagedListDisplayMode.Always,
+       DisplayLinkToIndividualPages = true,
+       MaximumPageNumbersToDisplay = 5, // Show only a few numbers
+       LinkToPreviousPageFormat = "❮",
+       LinkToNextPageFormat = "❯",
+       LinkToFirstPageFormat = "« First",
+       LinkToLastPageFormat = "Last »",
+       ContainerDivClasses = new[] { "pagination-container" },
+       UlElementClasses = new[] { "pagination", "pagination-lg" },
+       LiElementClasses = new[] { "page-item" },
+       PageClasses = new[] { "page-link" }
+   })
+    </div>
+
 </div>
 
-<div class="d-flex justify-content-center mt-4">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
-            new PagedListRenderOptions
-    {
-        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-        DisplayLinkToLastPage = PagedListDisplayMode.Always,
-        LinkToPreviousPageFormat = "<button class='btn btn-outline-primary mx-1'>Previous</button>",
-        LinkToNextPageFormat = "<button class='btn btn-outline-primary mx-1'>Next</button>",
-        LinkToFirstPageFormat = "<button class='btn btn-outline-primary mx-1'>First</button>",
-        LinkToLastPageFormat = "<button class='btn btn-outline-primary mx-1'>Last</button>",
-        ContainerDivClasses = new[] { "pagination" },
-        UlElementClasses = new[] { "pagination" },
-        LiElementClasses = new[] { "page-item" }
-    })
-</div>
-
+<!-- Bootstrap Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
 <style>
+    /* General Styling */
+    .container {
+        max-width: 1200px;
+    }
+
+    .product-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Product Image Hover Effect */
+    .product-image-container {
+        overflow: hidden;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.03);
+        opacity: 0.95;
+    }
+
+    /* Product Name Styling */
+    .product-name {
+        font-size: 1.1rem;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .product-card:hover .product-name {
+        color: #007bff;
+    }
+
+    /* Buttons */
     .btn-outline-primary {
         border-color: #007bff;
-        border-radius: 0.25rem; /* Rounded corners */
+        color: #007bff !important;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
     }
 
         .btn-outline-primary:hover {
-            background-color: #007bff; /* Change background on hover */
-            color: white; /* Change text color on hover */
+            background-color: #007bff !important;
+            color: white !important;
         }
 
+    .btn-outline-success {
+        border-color: #28a745 !important; /* Green border */
+        color: #28a745 !important; /* Green text */
+        font-weight: 600; /* Bold text */
+        transition: all 0.3s ease-in-out; /* Smooth transition */
+    }
+
+        .btn-outline-success:hover {
+            background-color: #28a745 !important; /* Green background */
+            color: white !important; /* White text */
+            border-color: #28a745 !important; /* Ensure border remains green */
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        font-weight: 600;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004a99;
+        }
+
+    /* Ensure Both Buttons Have the Same Size */
+    .product-actions .action-btn {
+        width: 100%; /* Full width */
+        height: 45px; /* Fixed height */
+        font-size: 16px; /* Ensure consistent font size */
+    }
+
+    /* Pagination Styling */
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
     .pagination {
-        margin-top: 1rem;
+        padding: 0;
+        list-style: none;
     }
 
-    .page-item {
-        margin: 0 5px; /* Add spacing between buttons */
-    }
+        .pagination .page-item {
+            margin: 0 5px;
+        }
 
+            .pagination .page-item .page-link {
+                color: #007bff;
+                background: white;
+                border: 1px solid #007bff;
+                padding: 10px 15px;
+                font-weight: bold;
+                border-radius: 50px;
+                transition: all 0.3s ease-in-out;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+                .pagination .page-item .page-link:hover,
+                .pagination .page-item .page-link:focus {
+                    background: #007bff;
+                    color: white;
+                    border-color: #007bff;
+                    transform: scale(1.1);
+                }
+
+            /* Active Page */
+            .pagination .page-item.active .page-link {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+                font-weight: bold;
+            }
+
+            /* Disabled Pagination Buttons */
+            .pagination .page-item.disabled .page-link {
+                color: #ccc;
+                pointer-events: none;
+                background: #f8f9fa;
+                border-color: #ddd;
+            }
+
+
+    /* Links */
     a {
-        color: black; /* Default text color for the link */
+        color: black;
     }
 
         a:hover {
-            text-decoration: none; /* No underline on hover */
+            text-decoration: none;
         }
 
-    .card a {
-        display: block; /* Ensures the anchor tag is block-level */
-        text-decoration: none; /* Prevent default link underline */
-    }
-
-    /* If you want to ensure the button does not inherit the link color */
     .card-footer a.btn {
-        color: black; /* Override button color if needed */
+        color: white;
     }
 
+    .product-actions {
+        margin-top: auto;
+    }
 </style>

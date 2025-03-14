@@ -1,56 +1,64 @@
 ﻿@page
 @model Myshop.Web.Areas.Identity.Pages.Account.LoginModel
 @{
-    ViewData["Title"] = "Login Now :";
+    ViewData["Title"] = "Login to Your Account";
 }
 
-<h1 class="text-center mb-5 text-info">@ViewData["Title"]</h1>
+<div class="container d-flex justify-content-center align-items-center my-5">
+    <div class="row w-100">
+        
+        <!-- Login Form -->
+        <div class="main col-lg-5 col-md-8 col-sm-10 mx-auto ">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-1">
+                    <h2 class="fw-bold">Welcome Back</h2>
+                    <p class="mb-0">Sign in to continue shopping</p>
+                </div>
+                <div class="card-body p-3">
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<div class="row d-flex justify-content-around">
-    <!-- Login Form -->
-    <div class="col-md-4">
-        <form id="account" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <!-- Email Input -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" required placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label">Email Address</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
 
-            <!-- Email Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" required placeholder="name@example.com" />
-                <label asp-for="Input.Email" class="form-label">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <!-- Password Input -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" required placeholder="Password" />
+                            <label asp-for="Input.Password" class="form-label">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Remember Me Checkbox -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="Input.RememberMe" id="rememberMeCheckbox" />
+                            <label class="form-check-label" asp-for="Input.RememberMe">Remember Me</label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button id="login-submit" type="submit" class="btn btn-outline-primary w-100 fw-bold py-2">Log In</button>
+
+                        <div class="text-center mt-3">
+                            <a href="https://localhost:7102/Customer/Customer/Index" class="btn btn-outline-secondary w-100 fw-bold py-2">Back to Home</a>
+                        </div>
+
+                        <!-- Forgot Password & Signup Links -->
+                        <div class="text-center mt-3">
+                            <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none">Forgot password?</a> |
+                            <a id="register" asp-page="./Register" class="text-decoration-none">Create an account</a>
+                        </div>
+                    </form>
+                </div>
             </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center h-25">
+            <!-- Image Section -->
+            <img src="~/img/login2.jpg" alt="Login Illustration" class="login-image">
+        </div>
 
-            <!-- Password Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" required placeholder="password" />
-                <label asp-for="Input.Password" class="form-label">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-
-            <!-- Remember Me Checkbox -->
-            <div class="form-check mb-3">
-                <input class="form-check-input" asp-for="Input.RememberMe" />
-                <label class="form-check-label" asp-for="Input.RememberMe">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
-            </div>
-
-            <!-- Submit Button -->
-            <div>
-                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-            </div>
-
-            <!-- Forgot Password Link -->
-            <div class="mt-3">
-                <p>
-                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                </p>
-            </div>
-        </form>
-    </div>
-
-    <!-- Image Section -->
-    <div class="col-md-6 d-flex justify-content-center align-items-center">
-        <section class="image-container">
-            <img src="~/img/login2.jpg" alt="login" class="full-width-image" />
-        </section>
     </div>
 </div>
 
@@ -64,22 +72,64 @@
                     .then(data => {
                         document.querySelector('.badge').innerText = data.count;
                     });
-            }, 1000); // Delay to allow login process to complete
+            }, 1000);
         });
     </script>
 }
 
+<!-- Custom Styling -->
 <style>
-    .full-width-image {
-        width: 100%;
-        height: 400px; /* Maintain the height */
-        object-fit: cover; /* Crop the image if necessary while preserving aspect ratio */
-        margin: 0;
-        padding: 0;
+    /* Full-height container */
+    .vh-100 {
+        height: 100vh;
     }
 
-    .image-container {
-        margin: 0; /* No margin on the image container */
-        padding: 0; /* No padding on the image container */
+    .main {
+        margin-top:80px
     }
+    /* Login Card Styling */
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        height :80px;
+    }
+
+    /* Input Fields */
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .form-check-input {
+        transform: scale(1.1);
+        margin-right: 5px;
+    }
+
+    /* Login Button */
+    .btn-primary {
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.02);
+    }
+
+    /* Image Section */
+    .login-image {
+        width: 80%;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        height : 300px;
+        margin-top:160px
+        
+    }
+
+    
 </style>

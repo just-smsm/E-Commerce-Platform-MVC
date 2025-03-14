@@ -34,6 +34,7 @@ namespace Myshop.Web.Areas.Customer.Controllers
             var cartCount = _httpContextAccessor.HttpContext.Session.GetInt32(SD.SessionKey) ?? 0;
             return Ok(new { count = cartCount });
         }
+
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
@@ -172,6 +173,7 @@ namespace Myshop.Web.Areas.Customer.Controllers
             }
 
             await _unitOfWork.CompleteAsync();
+            HttpContext.Session.SetInt32(SD.SessionKey, 0);
 
             var domain = "https://localhost:7102/";
             var options = new SessionCreateOptions

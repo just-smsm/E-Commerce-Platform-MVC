@@ -109,20 +109,31 @@ namespace Myshop.Web.Areas.Admin.Controllers
         {
             if (id <= 0)
             {
-                ModelState.AddModelError("", "Invalid category ID.");
-                return BadRequest(ModelState);
+                TempData["toastrMessage"] = "Invalid category ID.";
+                TempData["toastrType"] = "error"; // Show error message
+                return RedirectToAction(nameof(GetAllCategory));
+            }
+
+            var category = await _unitOfWork.Category.GetByIdAsync(id);
+            if (category == null)
+            {
+                TempData["toastrMessage"] = "Category not found.";
+                TempData["toastrType"] = "error";
+                return RedirectToAction(nameof(GetAllCategory));
             }
 
             var success = await _unitOfWork.Category.DeleteAsync(id);
             if (!success)
             {
-                ModelState.AddModelError("", "Deletion failed. Please try again.");
-                return BadRequest(ModelState);
+                TempData["toastrMessage"] = "Deletion failed. Please try again.";
+                TempData["toastrType"] = "error";
+                return RedirectToAction(nameof(GetAllCategory));
             }
 
-            TempData["toastrMessage"] = "Data has been deleted successfully";
-            TempData["toastrType"] = "deleted"; // Set the type for Toastr
+            TempData["toastrMessage"] = "Category deleted successfully.";
+            TempData["toastrType"] = "deleted";
             return RedirectToAction(nameof(GetAllCategory));
         }
+
     }
 }

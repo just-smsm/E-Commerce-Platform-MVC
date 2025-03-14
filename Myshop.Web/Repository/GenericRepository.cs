@@ -14,17 +14,31 @@ namespace Myshop.Web.Repository
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> dbSet;
 
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, string includeProperties = "")
+        public async Task<IEnumerable<T>> GetAllAsync(
+      Expression<Func<T, bool>> predicate = null,
+      string includeProperties = ""
+  )
         {
             IQueryable<T> query = dbSet;
 
-            foreach (var includeProperty in includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            // Include related entities if specified
+            if (!string.IsNullOrWhiteSpace(includeProperties))
             {
-                query = query.Include(includeProperty);
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
             }
 
-            return await query.Where(predicate).ToListAsync();
+            // Apply filtering if a predicate is provided
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return await query.ToListAsync();
         }
+
 
         public GenericRepository(ApplicationDbContext context)
         {

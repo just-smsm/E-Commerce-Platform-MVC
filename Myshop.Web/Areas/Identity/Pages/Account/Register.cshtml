@@ -1,98 +1,113 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register Now :";
+    ViewData["Title"] = "Create Your Account";
 }
 
-<h1 class="text-center mb-5 text-info">@ViewData["Title"]</h1>
-
-<div class="row d-flex justify-content-around">
-    <!-- Registration Form -->
-    <div class="col-md-4">
-        <form id="registerForm" method="post" asp-route-returnUrl="@Model.ReturnUrl">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
-            <!-- Display Name Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.DisplayName" class="form-control" autocomplete="off" required placeholder="Name" />
-                <label asp-for="Input.DisplayName">Display Name</label>
-                <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
-            </div>
-
-            <!-- City Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.City" class="form-control" autocomplete="off" required placeholder="City" />
-                <label asp-for="Input.City">City</label>
-                <span asp-validation-for="Input.City" class="text-danger"></span>
-            </div>
-
-            <!-- Address Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Address" class="form-control" autocomplete="off" required placeholder="Address" />
-                <label asp-for="Input.Address">Address</label>
-                <span asp-validation-for="Input.Address" class="text-danger"></span>
-            </div>
-
-            <!-- Phone Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Phone" class="form-control" autocomplete="off" required placeholder="Phone" />
-                <label asp-for="Input.Phone">Phone</label>
-                <span asp-validation-for="Input.Phone" class="text-danger"></span>
-            </div>
-
-            <!-- Email Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" required placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-
-            <!-- Password Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" required placeholder="Password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-
-            <!-- Confirm Password Input -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" required placeholder="Confirm Password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-
-            <!-- Role Selection for Admins -->
-            @if (User.IsInRole("Admin"))
-            {
-                <div class="mb-3">
-                    <label for="RoleMenus">Select Role</label>
-                    <select id="RoleMenus" name="RoleMenus" class="form-control">
-                        <option value="Admin">Admin</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Customer">Customer</option>
-                    </select>
+<div class="container d-flex justify-content-center align-items-center mb-3 ">
+    <div class="row w-100 ">
+        <!-- Image Section -->
+       
+        <!-- Registration Form -->
+        <div class="col-lg-5 col-md-8 col-sm-10 mx-auto mt-5">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-2">
+                    <h2 class="fw-bold">Join Us Today</h2>
+                    <p class="mb-0">Create an account to start shopping</p>
                 </div>
-            }
+                <div class="card-body p-2">
+                    <form id="registerForm" method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <!-- Submit Button -->
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">
-                @if (User.IsInRole("Admin"))
-                {
-                    <text>Add User</text>
-                }
-                else
-                {
-                    <text>Register</text>
-                }
-            </button>
-        </form>
-    </div>
+                        <!-- Display Name -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input asp-for="Input.DisplayName" class="form-control" autocomplete="off" required placeholder="Full Name" />
+                            <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+                        </div>
 
-    <!-- Image Section -->
-    <div class="col-md-6 d-flex justify-content-center align-items-center">
-        <section class="image-container">
-            <img src="~/img/login2.jpg" alt="login" class="full-width-image" />
-        </section>
+                        <!-- City -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="Input.City" class="form-control" autocomplete="off" required placeholder="City" />
+                            <span asp-validation-for="Input.City" class="text-danger"></span>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-house"></i></span>
+                            <input asp-for="Input.Address" class="form-control" autocomplete="off" required placeholder="Address" />
+                            <span asp-validation-for="Input.Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input asp-for="Input.Phone" class="form-control" autocomplete="off" required placeholder="Phone Number" />
+                            <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" required placeholder="Email Address" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" required placeholder="Password" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" required placeholder="Confirm Password" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <!-- Role Selection for Admins -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="mb-3">
+                                <label for="RoleMenus" class="fw-bold">Select Role</label>
+                                <select id="RoleMenus" name="RoleMenus" class="form-control">
+                                    <option value="Admin">Admin</option>
+                                    <option value="Editor">Editor</option>
+                                    <option value="Customer">Customer</option>
+                                </select>
+                            </div>
+                        }
+
+                        <!-- Submit Button -->
+                        <button id="registerSubmit" type="submit" class="btn btn-outline-primary w-100 fw-bold py-2">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <text>Add User</text>
+                            }
+                            else
+                            {
+                                <text>Register</text>
+                            }
+                        </button>
+
+                        <!-- Login Link -->
+                        <!-- Login Link and Back to Home -->
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a asp-page="./Login" class="text-decoration-none">Sign in</a></p>
+                            <a asp-controller="customer" asp-action="Index" class="btn btn-outline-secondary mt-2">Back to Home</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center">
+            <img src="~/img/login2.jpg" alt="Register" class="register-image">
+        </div>
+
     </div>
 </div>
 
@@ -100,17 +115,78 @@
     <partial name="_ValidationScriptsPartial" />
 }
 
+<!-- Custom Styling -->
 <style>
-    .full-width-image {
-        width: 100%;
-        height: 500px; /* Maintain the height */
-        object-fit: cover; /* Crop the image if necessary while preserving aspect ratio */
-        margin: 0; /* Remove margin */
-        padding: 0; /* Remove padding */
+    /* Full-height container */
+    
+
+    /* Registration Card Styling */
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
     }
 
-    .image-container {
-        margin: 0; /* No margin on the image container */
-        padding: 0; /* No padding on the image container */
+    .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
     }
+
+    /* Input Groups with Icons */
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+    }
+
+    .form-control {
+        border-left: none;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .form-check-input {
+        transform: scale(1.1);
+        margin-right: 5px;
+    }
+
+    /* Register Button */
+    .btn-primary {
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.02);
+    }
+
+    /* Image Section */
+    .register-image {
+        width: 80%;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Minimized Form Styling */
+    .card-body {
+        padding: 20px; /* Reduce padding */
+    }
+
+    .card-header {
+        padding: 15px 10px; /* Reduce header padding */
+    }
+
+    .input-group {
+        margin-bottom: 10px; /* Reduce spacing between fields */
+    }
+
+    .form-control {
+        padding: 8px; /* Reduce input height */
+        font-size: 14px; /* Slightly smaller font */
+    }
+
+   
+    .register-image {
+        max-height: 350px; /* Reduce image height */
+    }
+
 </style>

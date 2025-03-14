@@ -16,6 +16,6 @@ namespace Myshop.Web.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<Myshop.Web.ViewModels.OrderVM> OrderVM { get; set; } = default!;
+        
     }
 }

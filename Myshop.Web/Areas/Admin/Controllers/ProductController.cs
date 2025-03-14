@@ -39,14 +39,13 @@ namespace Myshop.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _unitOfWork.Product.GetByIdAsync(id);
+            var product = await _unitOfWork.Product.GetProductByIdWithCategoryAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            var mappedProduct = _mapper.Map<ProductViewModel>(product);
-            return View(mappedProduct); // Ensure this view expects a single ProductViewModel
+            return View(product); // Ensure this view expects a single ProductViewModel
         }
         [HttpGet]
         public async Task<IActionResult> CreateProduct()

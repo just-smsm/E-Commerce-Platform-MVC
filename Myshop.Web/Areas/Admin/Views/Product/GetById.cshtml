@@ -1,36 +1,52 @@
-﻿@model Myshop.Web.ViewModels.ProductViewModel
-
+﻿@model Product
 
 @{
     ViewBag.CartManagement = "Product Management";
     ViewBag.PageTitle = "Product Details";
-    // Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
-<h2>@Model.Name</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 border-0 rounded-3">
+        <div class="row">
+            <!-- Product Image Section -->
+            <div class="col-md-5 text-center">
+               
+                <img class="product-image img-fluid rounded shadow-sm"
+                     src="@Url.Content($"~/{Model.PictureUrl}")"
+                     alt="@Model.Name"
+                     style="max-width: 100%; height: 300px;">
 
-<div>
-    <h4>Product Details</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Name</dt>
-        <dd class="col-sm-10">@Model.Name</dd>
+            </div>
 
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Description</dd>
+            <!-- Product Details Section -->
+            <div class="col-md-7">
+                <h2 class="text-primary fw-bold">@Model.Name</h2>
+                <hr />
 
-        <dt class="col-sm-2">Price</dt>
-        <dd class="col-sm-10">@Model.Price</dd>
+                <dl class="row">
+                    <dt class="col-sm-4 fw-semibold">Name:</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
 
-        <dt class="col-sm-2">Picture</dt>
-        <dd class="col-sm-10"><img src="@Model.PictureUrl" alt="Product Image" style="width: 200px; height: auto;" /></dd>
+                    <dt class="col-sm-4 fw-semibold">Description:</dt>
+                    <dd class="col-sm-8 text-muted">@Model.Description</dd>
 
-        <dt class="col-sm-2">Category</dt>
-        <dd class="col-sm-10">@Model.CategoryId</dd>
-    </dl>
-</div>
+                    <dt class="col-sm-4 fw-semibold">Price:</dt>
+                    <dd class="col-sm-8 text-success fw-bold">$@Model.Price</dd>
 
-<div>
-    <a asp-action="UpdateProduct" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="GetAllProducts" class="btn btn-secondary">Back to List</a>
+                    <dt class="col-sm-4 fw-semibold">Category:</dt>
+                    <dd class="col-sm-8">@Model.Category.Name</dd>
+                </dl>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 mt-4">
+                    <a asp-action="UpdateProduct" asp-route-id="@Model.Id" class="btn btn-warning px-4">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a asp-action="GetAllProducts" class="btn btn-secondary px-4  mx-2">
+                        <i class="fas fa-list"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

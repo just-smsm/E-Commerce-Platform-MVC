@@ -87,10 +87,12 @@
                         }
 
                         <div class="card">
-                            <div class="card-body">
-                                <a href="@Url.Action("Summary", "Cart")" class="btn btn-warning btn-block btn-lg">Proceed to Pay</a>
+                            <div class="card-body d-flex justify-content-between">
+                                <a href="~/Customer/Customer/Index" class="btn btn-outline-secondary btn-lg">Back to Shopping</a>
+                                <a href="@Url.Action("Summary", "Cart")" class="btn btn-outline-success btn-lg">Proceed to Pay</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -98,10 +100,14 @@
     }
     else
     {
-        <div class="empty-cart-message text-center">
+        <div class="empty-cart-message text-center mt-5">
             <h1 class="mb-3">Cart is Empty</h1>
             <img src="~/img/empty.png" width="400" height="400" class="img-fluid" alt="Empty Cart" />
+            <div class="mt-3">
+                <a href="~/Customer/Customer/Index" class="btn btn-outline-secondary btn-lg">Back to Home</a>
+            </div>
         </div>
+
     }
 
     <!-- Bootstrap Bundle with Popper -->

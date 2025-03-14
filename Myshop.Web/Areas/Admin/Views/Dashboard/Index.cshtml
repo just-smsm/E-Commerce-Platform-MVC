@@ -39,7 +39,7 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>@ViewBag.OrderCount</h3>
-                                <p>New Orders</p>
+                                <p>All Orders</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -57,7 +57,7 @@
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="/Admin/Order/ApprovedOrders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -87,8 +87,20 @@
                             <a href="/Admin/Product/GetAllProducts" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-3 col-6">
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>@ViewBag.categorycount</h3>
+                                <p>Categories</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="/Admin/Category/GetAllCategory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    @* <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>@ViewBag.ProccessingOrdersCount</h3>
@@ -99,19 +111,8 @@
                             </div>
                             <a href="/Admin/Order/ProccessingOrders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>@ViewBag.UsersCount</h3>
-                                <p>Categories</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="/Admin/Category/GetAllCategory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
+                    </div> *@
+                    
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
                             <div class="inner">
@@ -119,7 +120,7 @@
                                 <p>Shipping Orders</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="ion ion-stats-bars"></i>
                             </div>
                             <a href="/Admin/Order/ShippingOrders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>

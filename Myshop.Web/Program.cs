@@ -39,6 +39,9 @@ namespace Myshop.Web
             builder.Services.AddScoped<ICategory, CategoryRepository>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
             builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddSession();
 
             // Configure Stripe settings

@@ -21,7 +21,7 @@ namespace Myshop.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categorycount = await _unitOfWork.Product.GetAllAsync();
+            var categorycount = await _unitOfWork.Category.GetAllAsync();
             var productCount = await _unitOfWork.Product.GetAllAsync();
             var orderCount = await _unitOfWork.OrderHeader.GetAllAsync();
             var approvedOrdersCount = await _unitOfWork.OrderHeader.GetAllAsync(x => x.OrderStatus == SD.Approve);

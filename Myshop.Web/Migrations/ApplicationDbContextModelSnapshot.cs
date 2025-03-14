@@ -253,7 +253,7 @@ namespace Myshop.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Myshop.Web.Models.OrderDetail", b =>
@@ -270,9 +270,6 @@ namespace Myshop.Web.Migrations
                     b.Property<int>("OrderHeaderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderVMId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -283,11 +280,9 @@ namespace Myshop.Web.Migrations
 
                     b.HasIndex("OrderHeaderId");
 
-                    b.HasIndex("OrderVMId");
-
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("Myshop.Web.Models.OrderHeader", b =>
@@ -348,7 +343,7 @@ namespace Myshop.Web.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("OrderHeaders");
+                    b.ToTable("OrderHeaders", (string)null);
                 });
 
             modelBuilder.Entity("Myshop.Web.Models.Product", b =>
@@ -381,7 +376,7 @@ namespace Myshop.Web.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Myshop.Web.Models.ShoppingCart", b =>
@@ -408,25 +403,7 @@ namespace Myshop.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("Myshop.Web.ViewModels.OrderVM", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderHeaderId");
-
-                    b.ToTable("OrderVM");
+                    b.ToTable("ShoppingCarts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -488,10 +465,6 @@ namespace Myshop.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Myshop.Web.ViewModels.OrderVM", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderVMId");
-
                     b.HasOne("Myshop.Web.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -544,25 +517,9 @@ namespace Myshop.Web.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Myshop.Web.ViewModels.OrderVM", b =>
-                {
-                    b.HasOne("Myshop.Web.Models.OrderHeader", "OrderHeader")
-                        .WithMany()
-                        .HasForeignKey("OrderHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderHeader");
-                });
-
             modelBuilder.Entity("Myshop.Web.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Myshop.Web.ViewModels.OrderVM", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }
